@@ -1,3 +1,4 @@
+import subprocess
 import luigi
 from Extract import Extract
 import MongoCRUD
@@ -113,6 +114,14 @@ class SaveAndUpdateData(luigi.Task):
         MongoCRUD.update_mongo(transcript_data)
         with self.output().open("w") as outfile:
             outfile.write("data loaded into target database on Mongodb")
+
+
+def execute_pipeline():
+    p = subprocess.Popen('luigid', stdout=subprocess.PIPE, shell=False)
+    res = luigi.build([SaveAndUpdateData()])
+    p.kill()
+    if not res:
+        raise 'An error has occorred during luigi workflow'
 
 
 if __name__ == "__main__":
