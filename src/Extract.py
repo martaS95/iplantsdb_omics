@@ -6,7 +6,12 @@ import GEOparse
 import re
 import requests
 
-Entrez.email = "pg45458@alunos.uminho.pt"
+from configparser import RawConfigParser
+
+db_configs = RawConfigParser()
+db_configs.read('/iplantsdb_omics/conf/iplantsdb_omics.conf')
+
+Entrez.email = str(db_configs.get('iplants-omics-configurations', 'entrez_email')),
 
 
 class Extract:

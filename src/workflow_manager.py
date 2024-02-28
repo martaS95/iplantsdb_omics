@@ -33,7 +33,8 @@ class ExtractDataGEOMicroArray(luigi.Task):
         return luigi.LocalTarget("data/ExtractGEOMicroArray.txt")
 
     def run(self):
-        extract = Extract("Vitis vinifera", "Expression profiling by array", "transcription profiling by array")
+        extract = Extract("Vitis vinifera", "Expression profiling by array",
+                          "transcription profiling by array")
         extract.download_softfiles()
 
         with self.output().open("w") as outfile:
@@ -41,7 +42,7 @@ class ExtractDataGEOMicroArray(luigi.Task):
 
 
 # Task 3: Extract filtered data by RNA-Seq study and organism from the ArrayExpress collection on BioStudies database
-class ExtractData_ArrayExpressRNASeq(luigi.Task):
+class ExtractDataArrayExpressRNASeq(luigi.Task):
 
     def requires(self):
         return ExtractDataGEORNASeq()
@@ -59,7 +60,7 @@ class ExtractData_ArrayExpressRNASeq(luigi.Task):
 
 
 # Task 4: Extract filtered data by microarray study and organism from the ArrayExpress collection on BioStudies database
-class ExtractData_ArrayExpressMicroArray(luigi.Task):
+class ExtractDataArrayExpressMicroArray(luigi.Task):
 
     def requires(self):
         return ExtractDataGEOMicroArray()
@@ -68,7 +69,8 @@ class ExtractData_ArrayExpressMicroArray(luigi.Task):
         return luigi.LocalTarget("data/ExtractMicroArray.txt")
 
     def run(self):
-        extract = Extract("Vitis vinifera", "Expression profiling by array", "transcription profiling by array")
+        extract = Extract("Vitis vinifera", "Expression profiling by array",
+                          "transcription profiling by array")
         extract.download_sdrf()
 
         with self.output().open("w") as outfile:
@@ -79,7 +81,7 @@ class ExtractData_ArrayExpressMicroArray(luigi.Task):
 class TransformData(luigi.Task):
 
     def requires(self):
-        return ExtractData_ArrayExpressRNASeq(), ExtractData_ArrayExpressMicroArray()
+        return ExtractDataArrayExpressRNASeq(), ExtractDataArrayExpressMicroArray()
 
     def output(self):
         return luigi.LocalTarget("data/dataset.json")  # "data/Transform.txt"

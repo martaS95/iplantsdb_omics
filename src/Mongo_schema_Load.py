@@ -3,11 +3,22 @@ import json
 from mongoengine import *
 from datetime import datetime
 
+from configparser import RawConfigParser
+
+db_configs = RawConfigParser()
+db_configs.read('/iplantsdb_omics/conf/iplantsdb_omics.conf')
+
 # Connects to target database by authenticating
 
-mongo_url = "mongodb://palsson.di.uminho.pt:1017/plantcyc"
+MONGODB_DATABASE = {
+    "name": str(db_configs.get('iplants-omics-configurations', 'mongodb_name')),
+    "host": str(db_configs.get('iplants-omics-configurations', 'mongodb_host')),
+    "port": int(db_configs.get('iplants-omics-configurations', 'mongodb_port')),
+}
+
 disconnect()
-connect(host=mongo_url)
+connect(MONGODB_DATABASE["name"], host=MONGODB_DATABASE["host"],
+        port=MONGODB_DATABASE["port"])
 
 
 class Transcriptomics(Document):

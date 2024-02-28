@@ -15,21 +15,18 @@ class Transform:
     """
 
     def __init__(self) -> None:
-        """
-        :param file_path: path to the folder (staging area) with all the files extracted by the Extract class
-        """
         self.dictionaryPrincipal = {}
         self.index = 0
 
         self.file_path = "staging_area/"
 
-    def open_files(self, type) -> list:
+    def open_files(self, file_type) -> list:
         """
         This method go to the staging area and lists the files in it
-        :param type: file's type to retrieve
+        :param file_type: type of the file to retrieve
         :return: list of all files in the folder (staging area)
         """
-        allfiles = [f for f in listdir(self.file_path) if isfile(join(self.file_path, f)) and type in f]
+        allfiles = [f for f in listdir(self.file_path) if isfile(join(self.file_path, f)) and file_type in f]
         return allfiles
 
     def createFile(self) -> None:
@@ -106,20 +103,20 @@ class Transform:
 
             dictionaryTemp["samples"] = {}
             for i in range(len(gse.metadata["sample_id"])):
-                id = gse.metadata["sample_id"][i]
+                idt = gse.metadata["sample_id"][i]
                 for j in range(len(lista)):
-                    dictionaryTemp["samples"][id] = lista[i]
+                    dictionaryTemp["samples"][idt] = lista[i]
 
             x = "dataset" + str(self.index + 1)
             self.dictionaryPrincipal[x] = dictionaryTemp.copy()
 
             self.index += 1
 
-    def transformArrayExpress(self, organism, data_type_geo, data_type_AE):
+    def transformArrayExpress(self, organism, data_type_geo, data_type_ae):
         """
         This method transforms the extracted ArrayExpress datasets.
         """
-        extract = Extract(organism, data_type_geo, data_type_AE)
+        extract = Extract(organism, data_type_geo, data_type_ae)
         accessions = extract.compare_accessions_array()
 
         for accession in accessions:
@@ -188,7 +185,9 @@ class Transform:
 if __name__ == "__main__":
     transf = Transform()
     transf.transformGEO()
-    transf.transformArrayExpress("Vitis vinifera", "Expression profiling by high throughput sequencing",
+    transf.transformArrayExpress("Vitis vinifera",
+                                 "Expression profiling by high throughput sequencing",
                                  "RNA-seq of coding RNA")
-    transf.transformArrayExpress("Vitis vinifera", "Expression profiling by array", "transcription profiling by array")
+    transf.transformArrayExpress("Vitis vinifera", "Expression profiling by array",
+                                 "transcription profiling by array")
     transf.createFile()
