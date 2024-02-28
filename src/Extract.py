@@ -61,7 +61,8 @@ class Extract:
         This method perform a restricted search by organism and study type on ArrayExpress collection through a REST API
         :return: a list with the ArrayExpress accession numbers
         """
-        api_url = 'https://www.ebi.ac.uk/biostudies/api/v1/arrayexpress/search?pageSize=100&study_type="' + self.study_type + '"&organism="' + self.organism + '"'
+        api_url = ('https://www.ebi.ac.uk/biostudies/api/v1/arrayexpress/search?pageSize=100&study_type="' +
+                   self.study_type + '"&organism="' + self.organism + '"')
         response = requests.get(api_url)
         file = response.json()
         info = file["hits"]
@@ -96,7 +97,9 @@ class Extract:
 
 
 if __name__ == "__main__":
-    extract = Extract("Vitis vinifera", "Expression profiling by high throughput sequencing", "RNA-seq of coding RNA")
+    extract = Extract("Vitis vinifera", "Expression profiling by high throughput sequencing",
+                      "RNA-seq of coding RNA")
     extract.download_sdrf()
-    extract = Extract("Vitis vinifera", "Expression profiling by array", "transcription profiling by array")
+    extract = Extract("Vitis vinifera", "Expression profiling by array",
+                      "transcription profiling by array")
     extract.download_sdrf()

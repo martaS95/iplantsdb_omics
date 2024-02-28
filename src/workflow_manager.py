@@ -89,7 +89,8 @@ class TransformData(luigi.Task):
     def run(self):
         transf = Transform()
         transf.transformGEO()
-        transf.transformArrayExpress("Vitis vinifera", "Expression profiling by high throughput sequencing",
+        transf.transformArrayExpress("Vitis vinifera",
+                                     "Expression profiling by high throughput sequencing",
                                      "RNA-seq of coding RNA")
         transf.transformArrayExpress("Vitis vinifera", "Expression profiling by array",
                                      "transcription profiling by array")
